@@ -4,254 +4,194 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:stretchColumns="*">
-
+    <!-- Menú principal. -->
     <Toolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:title="Batalla Naval"/>
-
     <TableRow>
         <TextView
             android:id="@+id/movimientos"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Movimientos: "
-            android:gravity="center"/>
+            android:gravity="right"/>
         <TextView
             android:id="@+id/cantidadMovimientos"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="0"/>
         <TextView
             android:id="@+id/aciertos"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Aciertos: "
-            android:gravity="center"/>
+            android:gravity="right"/>
         <TextView
             android:id="@+id/cantidadAciertos"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="right"
             android:text="0"/>
-    </TableRow>
-    <TableLayout>
-        <Button
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Atacar"
-            android:layout_margin="20dp"/>
-    </TableLayout>
+            android:gravity="center"
+            android:text="/"/>
+        <TextView
+            android:id="@+id/cantidadBarcos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="0"/>
+    </TableRow>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nuevo Juego"
+        android:layout_margin="20dp"
+        android:onClick="nuevoJuego"/>
 
+    <!-- Tablero de juego. -->
     <TableLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:stretchColumns="*"
-        android:layout_margin="10dp">
+        android:layout_margin="8dp">
+        <!-- Fila A. -->
         <TableRow>
             <Button
-                android:layout_width="0dp"
-                android:layout_height="70dp"
-                android:layout_weight="1"
-                android:text="0"
-                android:gravity="center"/>
+                style="@style/casillero"
+                android:text="A1"/>
             <Button
-                android:layout_width="0dp"
-                android:layout_height="70dp"
-                android:layout_weight="1"
-                android:text="0"/>
+                style="@style/casillero"
+                android:text="A2"/>
             <Button
-                android:layout_width="0dp"
-                android:layout_height="70dp"
-                android:layout_weight="1"
-                android:text="0"
-                android:gravity="center"/>
+                style="@style/casillero"
+                android:text="A3"/>
             <Button
-                android:layout_width="0dp"
-                android:layout_height="70dp"
-                android:layout_weight="1"
-                android:text="0"/>
+                style="@style/casillero"
+                android:text="A4"/>
             <Button
-                android:layout_width="0dp"
-                android:layout_height="70dp"
-                android:layout_weight="1"
-                android:text="0"/>
+                style="@style/casillero"
+                android:text="A5"/>
             <Button
-                android:layout_width="0dp"
-                android:layout_height="70dp"
-                android:layout_weight="1"
-                android:text="0"/>
+                style="@style/casillero"
+                android:text="A6"/>
         </TableRow>
+        <!-- Fila B. -->
         <TableRow>
             <Button
-                android:layout_width="0dp"
-                android:layout_height="70dp"
-                android:layout_weight="1"
-                android:text="0"
-                android:gravity="center"/>
+                style="@style/casillero"
+                android:text="B1"/>
             <Button
-                android:layout_width="0dp"
-                android:layout_height="70dp"
-                android:layout_weight="1"
-                android:text="0"/>
+                style="@style/casillero"
+                android:text="B2"/>
             <Button
-                android:layout_width="0dp"
-                android:layout_height="70dp"
-                android:layout_weight="1"
-                android:text="0"
-                android:gravity="center"/>
+                style="@style/casillero"
+                android:text="B3"/>
             <Button
-                android:layout_width="0dp"
-                android:layout_height="70dp"
-                android:layout_weight="1"
-                android:text="0"/>
+                style="@style/casillero"
+                android:text="B4"/>
             <Button
-                android:layout_width="0dp"
-                android:layout_height="70dp"
-                android:layout_weight="1"
-                android:text="0"/>
+                style="@style/casillero"
+                android:text="B5"/>
             <Button
-                android:layout_width="0dp"
-                android:layout_height="70dp"
-                android:layout_weight="1"
-                android:text="0"/>
+                style="@style/casillero"
+                android:text="B6"/>
         </TableRow>
+        <!-- Fila C. -->
         <TableRow>
             <Button
-                android:layout_width="0dp"
-                android:layout_height="70dp"
-                android:layout_weight="1"
-                android:text="0"
-                android:gravity="center"/>
+                style="@style/casillero"
+                android:text="C1"/>
             <Button
-                android:layout_width="0dp"
-                android:layout_height="70dp"
-                android:layout_weight="1"
-                android:text="0"/>
+                style="@style/casillero"
+                android:text="C2"/>
             <Button
-                android:layout_width="0dp"
-                android:layout_height="70dp"
-                android:layout_weight="1"
-                android:text="0"
-                android:gravity="center"/>
+                style="@style/casillero"
+                android:text="C3"/>
             <Button
-                android:layout_width="0dp"
-                android:layout_height="70dp"
-                android:layout_weight="1"
-                android:text="0"/>
+                style="@style/casillero"
+                android:text="C4"/>
             <Button
-                android:layout_width="0dp"
-                android:layout_height="70dp"
-                android:layout_weight="1"
-                android:text="0"/>
+                style="@style/casillero"
+                android:text="C5"/>
             <Button
-                android:layout_width="0dp"
-                android:layout_height="70dp"
-                android:layout_weight="1"
-                android:text="0"/>
+                style="@style/casillero"
+                android:text="C6"/>
         </TableRow>
+        <!-- Fila D. -->
         <TableRow>
             <Button
-                android:layout_width="0dp"
-                android:layout_height="70dp"
-                android:layout_weight="1"
-                android:text="0"
-                android:gravity="center"/>
+                style="@style/casillero"
+                android:text="D1"/>
             <Button
-                android:layout_width="0dp"
-                android:layout_height="70dp"
-                android:layout_weight="1"
-                android:text="0"/>
+                style="@style/casillero"
+                android:text="D2"/>
             <Button
-                android:layout_width="0dp"
-                android:layout_height="70dp"
-                android:layout_weight="1"
-                android:text="0"
-                android:gravity="center"/>
+                style="@style/casillero"
+                android:text="D3"/>
             <Button
-                android:layout_width="0dp"
-                android:layout_height="70dp"
-                android:layout_weight="1"
-                android:text="0"/>
+                style="@style/casillero"
+                android:text="D4"/>
             <Button
-                android:layout_width="0dp"
-                android:layout_height="70dp"
-                android:layout_weight="1"
-                android:text="0"/>
+                style="@style/casillero"
+                android:text="D5"/>
             <Button
-                android:layout_width="0dp"
-                android:layout_height="70dp"
-                android:layout_weight="1"
-                android:text="0"/>
+                style="@style/casillero"
+                android:text="D6"/>
         </TableRow>
+        <!-- Fila E. -->
         <TableRow>
             <Button
-                android:layout_width="0dp"
-                android:layout_height="70dp"
-                android:layout_weight="1"
-                android:text="0"
-                android:gravity="center"/>
-
+                style="@style/casillero"
+                android:text="E1"/>
             <Button
-                android:layout_width="0dp"
-                android:layout_height="70dp"
-                android:layout_weight="1"
-                android:text="0" />
+                style="@style/casillero"
+                android:text="E2" />
             <Button
-                android:layout_width="0dp"
-                android:layout_height="70dp"
-                android:layout_weight="1"
-                android:text="0"
-                android:gravity="center"/>
+                style="@style/casillero"
+                android:text="E3"/>
             <Button
-                android:layout_width="0dp"
-                android:layout_height="70dp"
-                android:layout_weight="1"
-                android:text="0"/>
+                style="@style/casillero"
+                android:text="E4"/>
             <Button
-                android:layout_width="0dp"
-                android:layout_height="70dp"
-                android:layout_weight="1"
-                android:text="0"/>
+                style="@style/casillero"
+                android:text="E5"/>
             <Button
-                android:layout_width="0dp"
-                android:layout_height="70dp"
-                android:layout_weight="1"
-                android:text="0"/>
+                style="@style/casillero"
+                android:text="E6"/>
         </TableRow>
+        <!-- Fila F. -->
         <TableRow>
             <Button
-                android:layout_width="0dp"
-                android:layout_height="70dp"
-                android:layout_weight="1"
-                android:text="0"
-                android:gravity="center"/>
+                style="@style/casillero"
+                android:text="F1"/>
             <Button
-                android:layout_width="0dp"
-                android:layout_height="70dp"
-                android:layout_weight="1"
-                android:text="0"/>
+                style="@style/casillero"
+                android:text="F2"/>
             <Button
-                android:layout_width="0dp"
-                android:layout_height="70dp"
-                android:layout_weight="1"
-                android:text="0"
-                android:gravity="center"/>
+                style="@style/casillero"
+                android:text="F3"/>
             <Button
-                android:layout_width="0dp"
-                android:layout_height="70dp"
-                android:layout_weight="1"
-                android:text="0"/>
+                style="@style/casillero"
+                android:text="F4"/>
             <Button
-                android:layout_width="0dp"
-                android:layout_height="70dp"
-                android:layout_weight="1"
-                android:text="0"/>
+                style="@style/casillero"
+                android:text="F5"/>
             <Button
-                android:layout_width="0dp"
-                android:layout_height="70dp"
-                android:layout_weight="1"
-                android:text="0"/>
+                style="@style/casillero"
+                android:text="F6"/>
         </TableRow>
+        <!-- Botón Atacar. -->
+        <Button
+            android:layout_height="70dp"
+            android:layout_margin="30dp"
+            android:layout_gravity="center"
+            android:text="Atacar"
+            android:onClick="atacar"/>
     </TableLayout>
+
 </TableLayout>
