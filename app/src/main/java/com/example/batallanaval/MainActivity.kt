@@ -37,23 +37,26 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun colocarBarcos() {
-        var columna = 0;
-        var fila = 0;
         var coordenada = "";
+        var colocando = true;
 
         for (b in 1..barcosADerribar) {
-            var colocando = true;
             while (colocando) {
-                columna = Random.nextInt(6) + 1 * 10;
-                fila = Random.nextInt(6) + 1;
-                coordenada = (columna + fila).toString();
+                colocando = true;
+                coordenada = generarCoordenada()
                 val idRecurso = resources.getIdentifier(coordenada, "id", packageName);
                 val casillero = findViewById<Button>(idRecurso);
+                if (casillero.getTag().toString() == "agua") {
+                    casillero.setTag("barco");
+                    colocando = false;
+                }
             }
-
         }
-
     }
 
-
+    fun generarCoordenada(): String {
+        var columna = (Random.nextInt(6) + 1) * 10;
+        var fila = Random.nextInt(6) + 1;
+        return "b${columna + fila}";
+    }
 }
