@@ -15,18 +15,25 @@ class MainActivity : AppCompatActivity() {
     var intentos = 0;
     var aciertos = 0;
     var barcosADerribar = 0;
+    lateinit var casilleroActual : TextView;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
     }
 
-    fun seleccionarCasillero(v: View) {
-
+    fun seleccionarCasillero(v: TextView) {
+        casilleroActual = v;
     }
 
     fun atacar(v: View) {
-
+        if (casilleroActual.tag == "barco") {
+            casilleroActual.setTag("agua");
+            aciertos++;
+            intentos++;
+        } else {
+            intentos++;
+        }
     }
 
     fun nuevoJuego(v: View) {
