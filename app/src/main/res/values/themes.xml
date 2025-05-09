@@ -7,11 +7,4 @@
 
     <style name="Theme.BatallaNaval" parent="Base.Theme.BatallaNaval" />
 
-    <style name="casillero">
-        <item name="android:layout_height">70dp</item>
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:onClick">seleccionarCasillero</item>
-        <item name="android:tag">agua</item>
-    </style>
 </resources>
