@@ -55,136 +55,13 @@
     <!-- Tablero de juego. -->
     <TableLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/tablero"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:stretchColumns="*"
         android:layout_margin="8dp">
-        <!-- Fila A. -->
-        <TableRow>
-            <Button
-                style="@style/casillero"
-                android:text="A1"/>
-            <Button
-                style="@style/casillero"
-                android:text="A2"/>
-            <Button
-                style="@style/casillero"
-                android:text="A3"/>
-            <Button
-                style="@style/casillero"
-                android:text="A4"/>
-            <Button
-                style="@style/casillero"
-                android:text="A5"/>
-            <Button
-                style="@style/casillero"
-                android:text="A6"/>
-        </TableRow>
-        <!-- Fila B. -->
-        <TableRow>
-            <Button
-                style="@style/casillero"
-                android:text="B1"/>
-            <Button
-                style="@style/casillero"
-                android:text="B2"/>
-            <Button
-                style="@style/casillero"
-                android:text="B3"/>
-            <Button
-                style="@style/casillero"
-                android:text="B4"/>
-            <Button
-                style="@style/casillero"
-                android:text="B5"/>
-            <Button
-                style="@style/casillero"
-                android:text="B6"/>
-        </TableRow>
-        <!-- Fila C. -->
-        <TableRow>
-            <Button
-                style="@style/casillero"
-                android:text="C1"/>
-            <Button
-                style="@style/casillero"
-                android:text="C2"/>
-            <Button
-                style="@style/casillero"
-                android:text="C3"/>
-            <Button
-                style="@style/casillero"
-                android:text="C4"/>
-            <Button
-                style="@style/casillero"
-                android:text="C5"/>
-            <Button
-                style="@style/casillero"
-                android:text="C6"/>
-        </TableRow>
-        <!-- Fila D. -->
-        <TableRow>
-            <Button
-                style="@style/casillero"
-                android:text="D1"/>
-            <Button
-                style="@style/casillero"
-                android:text="D2"/>
-            <Button
-                style="@style/casillero"
-                android:text="D3"/>
-            <Button
-                style="@style/casillero"
-                android:text="D4"/>
-            <Button
-                style="@style/casillero"
-                android:text="D5"/>
-            <Button
-                style="@style/casillero"
-                android:text="D6"/>
-        </TableRow>
-        <!-- Fila E. -->
-        <TableRow>
-            <Button
-                style="@style/casillero"
-                android:text="E1"/>
-            <Button
-                style="@style/casillero"
-                android:text="E2" />
-            <Button
-                style="@style/casillero"
-                android:text="E3"/>
-            <Button
-                style="@style/casillero"
-                android:text="E4"/>
-            <Button
-                style="@style/casillero"
-                android:text="E5"/>
-            <Button
-                style="@style/casillero"
-                android:text="E6"/>
-        </TableRow>
-        <!-- Fila F. -->
-        <TableRow>
-            <Button
-                style="@style/casillero"
-                android:text="F1"/>
-            <Button
-                style="@style/casillero"
-                android:text="F2"/>
-            <Button
-                style="@style/casillero"
-                android:text="F3"/>
-            <Button
-                style="@style/casillero"
-                android:text="F4"/>
-            <Button
-                style="@style/casillero"
-                android:text="F5"/>
-            <Button
-                style="@style/casillero"
-                android:text="F6"/>
-        </TableRow>
+    </TableLayout>
+
         <!-- Botón Atacar. -->
         <Button
             android:layout_height="70dp"
@@ -192,6 +69,5 @@
             android:layout_gravity="center"
             android:text="Atacar"
             android:onClick="atacar"/>
-    </TableLayout>
 
 </TableLayout>
