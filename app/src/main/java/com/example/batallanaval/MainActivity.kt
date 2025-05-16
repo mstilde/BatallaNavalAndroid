@@ -1,125 +1,201 @@
 package com.example.batallanaval
 
+import android.widget.TableLayout
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.graphics.Color
 import android.view.View
 import android.widget.Button
-import android.widget.TableLayout
 import android.widget.TableRow
-import android.widget.TextView
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import kotlin.random.Random
-import kotlin.random.nextInt
+import android.widget.TextView
+import android.widget.Toast
 
 class MainActivity : AppCompatActivity() {
-    //Variables globales
+    lateinit var tableroJuego : TableLayout // Tablero en donde se va a desarrollar el juego en el xml
+    lateinit var viewMovimientos: TextView // Variable para almacenar el View de los movimientos del usuario
+    lateinit var viewBarcosRestantes: TextView // Variable para almacenar el View de los barcos restantes
+    lateinit var viewAcertados: TextView // Variable para almacenar el view de los barcos acertados
 
-    // Construir un tablero dentro de la logica kotlin declarando un lateinit para inicializarlo en el onCreate usando un layout TableLayout
-    lateinit var tablero: TableLayout
-    // Dimensiones del tablero.
-    val filas = arrayOf("A", "B", "C", "D", "E", "F")
-    val columnas = 6
-    // Casilleros de tablero en una matriz 6x6
-    lateinit var casilleros: Array<Array<Button>>
-    // Usamos con "var" una variable para poder guardar el casillero seleccionado. Usamos un null como valor inicial ya que al iniciar el juego no tiene valor seleccionado.
-    var casilleroSeleccionado : Button? = null;
-
-    // Almacenamiento interno de las estadisticas.
-    var intentos = 0;
-    var aciertos = 0;
-    var barcosADerribar = 0;
+    val tamanio = 6 // Constante de dimensión física para el tablero
+    var tableroBooleanos = Array(tamanio){Array(tamanio){false}} // Matriz de booleanos para los valores barco/agua (inicializado tdo en false, osea, agua)
+    var tableroBotones = Array(tamanio){arrayOfNulls<Button>(tamanio)} // Matriz de memoria para botones, inicializados en null
+    var cantidadAciertos = 0 // Variable interna de aciertos
+    var cantidadMovimientos = 0 // Variable interna de cantidad de movimientos
+    var barcos = 0 // Variable interna de barcos a hundir
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        // Tomamos en layout del xml por el id y lo almacenamos en la variable. Luego generamos el tablero.
-        tablero = findViewById(R.id.tablero)
-        generarTablero()
+        // Asignamos a las variables declaradas sus respectivos elementos xml
+        tableroJuego = findViewById(R.id.tablero)
+        viewMovimientos = findViewById<TextView>(R.id.contador_movimientos)
+        viewBarcosRestantes = findViewById<TextView>(R.id.barcos_Restantes)
+        viewAcertados = findViewById<TextView>(R.id.contador_aciertos)
+        // Inicializamos la cantidad de barcos y el tablero
+        colocarBarcos()
+        iniciarTablero()
+        viewBarcosRestantes.text= "Barcos restantes: ${barcos}"
     }
 
-    fun generarTablero() {
-        // Con removeAllViews limpiamos los casilleros con todas las configuraciones previas en caso de estar iniciado el juego de nuevo
-        tablero.removeAllViews()
-        // Se genera el tablero limpio de 0
-        casilleros = Array(filas.size) { fil -> // Creamos un array para cada fila (fil) según el tamaño del array (6) y lo almacenamos en la matriz "casilleros"
-            Array(columnas) { col -> // Hacemos lo mismo creando un array para cada columna. Cada valor col indicará el número de la columna.
-                val boton = Button(this).apply { // En cada coordenada (fila y columna) de la matriz, creamos un botón en el contexto "this" y le aplicamos los sigientes datos:
-                    text = "${filas[fil]}${col+1}" // Como texto, el valor actual de la letra de la fila y el de la columna + 1 (ya que los indices del array de dimension 6, van del 0 al 5)
-                    layoutParams = TableRow.LayoutParams(0, 70).apply { // Agregar dimensiones de ancho, alto y aplicar weight para que los botones ocupen el mismo espacio dentro de la fila
-                        weight = 1f
-                    }
-                    tag = "agua" //Agregarle un tag para identificar de que casillero se trata, si de agua o barco. En este caso como inicializa de 0 el tablero, se coloca en "agua"
-                    setOnClickListener { seleccionarCasillero(this) } // Le damos también un listener para que al clickarlo se active la función seleccionarCasillero
+    // Función para resetear los contadores locales
+    fun reiniciarContadores(){
+        cantidadMovimientos = 0
+        cantidadAciertos = 0
+    }
+
+    // Función para setear el juego de 0
+    fun reiniciarJuego(v: View){
+        // Resetear el tablero
+        tableroJuego.removeAllViews() // Limpiar parte gráfica del tablero
+        tableroBotones = Array(tamanio){arrayOfNulls<Button>(tamanio)} // Limpiar la parte de lógica interna del tablero
+        tableroBooleanos = Array(tamanio){Array(tamanio){false}} // El tablero de booleanos lo seteamos completo en false
+        // Ya con el juego limpio, llamamos a las funciones que construyen un nuevo espacio de juego
+        reiniciarContadores()
+        colocarBarcos()
+        iniciarTablero()
+        // Resetear las estadisticas
+        viewMovimientos.text = "Movimientos: ${cantidadMovimientos}"
+        viewAcertados.text = "Acertados: ${cantidadAciertos}"
+        viewBarcosRestantes.text= "Barcos restantes: ${barcos}"
+    }
+
+    // Genero un random entre un rango delimitado
+    fun generarRandom(num1:Int,num2:Int):Int{
+        return Random.nextInt(num1,num2+1)
+    }
+
+    // Genero los barcos
+    fun colocarBarcos(){
+        var barcosColocados = 0
+        barcos = generarRandom(10,15)
+        // Vamos colocando de a uno los barcos y verificando si ya hay uno colocado
+        while(barcosColocados < barcos) {
+            var fila = generarRandom(0, (tamanio - 1))
+            var columna = generarRandom(0, (tamanio - 1))
+            if (!tableroBooleanos[fila][columna]) {
+                tableroBooleanos[fila][columna] = true
+                barcosColocados++
+            }
+        }
+    }
+
+    // Función que se le asigna a cada botón con su coordenada correspondiente
+    fun botonClik(i : Int, j : Int){
+        var casillero = tableroBotones[i][j] // Almacenamos el botón actual en una variable
+
+        if(casillero?.isEnabled == false) return // isEnabled verifica si el boton esta disponible o no para interactuar, es decir, si ya se jugó en la partida
+
+        // Verificamos el contenido del casillero
+        if (tableroBooleanos[i][j]) { // Si tiene un barco, osea, si está en true
+            // Modificamos el estilo del casillero en función de que encontró un barco y se hundió
+            casillero?.textSize = 10f
+            casillero?.text = "BARCO"
+            casillero?.setBackgroundColor(Color.RED)
+            // Actualizamos las estadisticas
+            cantidadAciertos++
+            barcos--
+            viewAcertados.text= "Acertados: ${cantidadAciertos}"
+            viewBarcosRestantes.text= "Barcos restantes: ${barcos}"
+        } else { // Si el casillero tiene agua, lo modificamos de forma distinta
+            casillero?.textSize = 10f
+            casillero?.text = "AGUA"
+            casillero?.setBackgroundColor(Color.CYAN)
+        }
+        // Actualizamos los movimientos
+        cantidadMovimientos++
+        viewMovimientos.text="Movimientos: ${cantidadMovimientos}"
+
+        casillero?.isEnabled = false // Deshabilitamos el botón
+
+        if (barcos==0) { // Verificamos si quedan barcos
+            Toast.makeText(this,"¡Hundiste todos los barcos!", Toast.LENGTH_LONG).show() // Se muestra el toast al ganar la partida
+        }
+    }
+    // Se crea la interfáz gráfica del tablero, con sus botones en el TableLayout del xml
+    fun iniciarTablero(){
+        val dpBoton = (40 * resources.displayMetrics.density).toInt() // Tamaño del boton a usar. Se mutiplica el dp actual de la pantalla por 40 (Osea, tamaño de 40dp)
+        for (i in 0 until tamanio) {
+            val fila = TableRow(this) // Creamos una fila en el contexto de la main activity
+            for (j in 0 until tamanio) {
+                val letra = 'A' + j // Vamos actualizando las letra de la coordenada correspondiente en cada columna usando ASCII y la almacenamos
+                val boton = Button(this)
+                // Creamos los valores xml del botón
+                boton.text = "${letra}${i+1}" // Le damos al botón creado su letra y número correspondiente de so coordenada
+                boton.layoutParams = TableRow.LayoutParams(dpBoton, dpBoton) // Asignamos las dimensiones correspondientes
+                boton.textSize = 18f
+                // Le asignamos a cada botón una función que mande como parámetros sus coordenadas
+                boton.setOnClickListener {
+                    botonClik(i,j)
                 }
-                boton // Acá se devuelve la variable que creamos recién para almacenarlo en el array de la columna
+                fila.addView(boton) // Agregamos el boton a la interfaz grafica de la fila
+                tableroBotones[i][j] = boton // Agregamos el boton a la matriz global de botónes en su coordenada correspondiente
+            }
+            tableroJuego.addView(fila) // Finalmente, agregamos la fila en la interfaz gráfica de la matríz
+        }
+    }
+
+    // Salvamos la información cuando se cambia de pantalla
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        // Para almacenar el array, necesitamos aplanarlo en una sola dimensión y almacenarlo en un array booleano
+        val arrayPlano = BooleanArray(tamanio * tamanio) { i ->
+            val fila = i / tamanio
+            val col = i % tamanio
+            tableroBooleanos[fila][col]
+        }
+        // También necesitamos almacenar un array para saber cuales botones fueron presionados y cuales no
+        val botonesPresionados = BooleanArray(tamanio * tamanio) { i ->
+            val fila = i / tamanio
+            val col = i % tamanio
+            !tableroBotones[fila][col]?.isEnabled!! // True si fue presionado
+        }
+
+        // Guardamos los datos
+        outState.putBooleanArray("arrayBooleano", arrayPlano)
+        outState.putBooleanArray("botonesPresionados", botonesPresionados)
+        outState.putInt("cantidadAciertos", cantidadAciertos)
+        outState.putInt("cantidadMovimientos", cantidadMovimientos)
+        outState.putInt("barcos", barcos)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+
+        // Recuperamos los datos
+        cantidadAciertos = savedInstanceState.getInt("cantidadAciertos")
+        cantidadMovimientos = savedInstanceState.getInt("cantidadMovimientos")
+        barcos = savedInstanceState.getInt("barcos")
+        val arrayPlano = savedInstanceState.getBooleanArray("arrayBooleano")
+        val arrayBotonesPresionados = savedInstanceState.getBooleanArray("botonesPresionados")
+
+        if (arrayPlano != null && arrayBotonesPresionados != null) { // Verificación de si los arrays se restauran correctamente. Sin esto, Kotlin no deja recuperar los indices de los arrays
+            for (i in arrayPlano.indices) {
+                val fila = i / tamanio
+                val col = i % tamanio
+                tableroBooleanos[fila][col] = arrayPlano[i] // Restauramos cada valor booleano como estaba
+
+                // Ahora restauramos el valor de cada botón en el array de botones
+                val boton = tableroBotones[fila][col]
+
+                if (arrayBotonesPresionados[i]) { // Verificamos si el botón fué presionado previamente antes de revelarlo
+                    if (tableroBooleanos[fila][col]) {
+                        boton?.textSize = 10f
+                        boton?.text = "BARCO"
+                        boton?.setBackgroundColor(Color.RED)
+                    } else {
+                        boton?.textSize = 10f
+                        boton?.text = "AGUA"
+                        boton?.setBackgroundColor(Color.CYAN)
+                    }
+                    boton?.isEnabled = false
+                }
             }
         }
 
-        // Acá agregamos la estructura de matriz generada anteriormente a la interfaz de usuario
-        for (fila in casilleros) { // Hacemos un for por cada fila en la tabla de casilleros
-            val tableRow = TableRow(this) // Creamos una variable TableRow en donde almacenaremos los botones
-            fila.forEach { boton -> tableRow.addView(boton) } // Con el forEach vamos cada botón en el tableRow que creamos para la interfaz con addView
-            tablero.addView(tableRow) // Finalmente, al TableLayout tablero vamos agregandole su respectiva fila para mostrar en la interfaz
-        }
-    }
-
-    fun seleccionarCasillero(boton: Button) {
-        casilleroSeleccionado?.setBackgroundResource(android.R.drawable.btn_default)
-
-        casilleroSeleccionado = boton
-        boton.setBackgroundColor(resources.getColor(android.R.color.holo_blue_light, theme))
-    }
-
-    fun atacar(v: View) {
-        val boton = casilleroSeleccionado ?: return
-
-        if (boton.text == "X" || boton.text == "O") return
-
-        if (boton.tag == "barco") {
-            boton.text = "X"
-            aciertos++
-        } else {
-            boton.text = "O"
-        }
-
-        intentos++
-        actualizarContadores()
-
-        boton.setBackgroundResource(android.R.drawable.btn_default)
-        casilleroSeleccionado = null
-    }
-
-    fun nuevoJuego(v: View) {
-        intentos = 0
-        aciertos = 0
-        barcosADerribar = Random.nextInt(10, 16);
-
-        generarTablero()
-        colocarBarcos();
-
-        findViewById<TextView>(R.id.cantidadBarcos).text = barcosADerribar.toString()
-        actualizarContadores()
-
-    }
-
-    fun colocarBarcos() {
-        var colocados = 0
-        while (colocados < barcosADerribar) {
-            val fila = Random.nextInt(filas.size)
-            val col = Random.nextInt(columnas)
-            val boton = casilleros[fila][col]
-            if (boton.tag == "agua") {
-                boton.tag = "barco"
-                colocados++
-            }
-        }
-    }
-
-    fun actualizarContadores() {
-        findViewById<TextView>(R.id.cantidadMovimientos).text = intentos.toString()
-        findViewById<TextView>(R.id.cantidadAciertos).text = aciertos.toString()
+        // Restauramos los views
+        viewAcertados.text = "Acertados: ${cantidadAciertos}"
+        viewMovimientos.text = "Movimientos: ${cantidadMovimientos}"
+        viewBarcosRestantes.text= "Barcos restantes: ${barcos}"
     }
 }

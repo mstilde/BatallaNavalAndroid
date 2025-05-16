@@ -4,70 +4,40 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:stretchColumns="*">
-    <!-- Menú principal. -->
     <Toolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:title="Batalla Naval"/>
+        android:title="Batalla Naval"
+        android:background="#3399FF"
+        />
     <TableRow>
         <TextView
-            android:id="@+id/movimientos"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Movimientos: "
-            android:gravity="right"/>
+            android:text="Aciertos: 0"
+            android:id="@+id/contador_aciertos" />
         <TextView
-            android:id="@+id/cantidadMovimientos"
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="0"/>
+            android:layout_width="wrap_content"
+            android:text="Movimientos: 0"
+            android:id="@+id/contador_movimientos"/>
         <TextView
-            android:id="@+id/aciertos"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Aciertos: "
-            android:gravity="right"/>
-        <TextView
-            android:id="@+id/cantidadAciertos"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="right"
-            android:text="0"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="/"/>
-        <TextView
-            android:id="@+id/cantidadBarcos"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="0"/>
+            android:text="Barcos restantes: 0"
+            android:id="@+id/barcos_Restantes"/>
     </TableRow>
+    <TableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:stretchColumns="*"
+        android:id="@+id/tablero">
+    </TableLayout>
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Nuevo Juego"
-        android:layout_margin="20dp"
-        android:onClick="nuevoJuego"/>
-
-    <!-- Tablero de juego. -->
-    <TableLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/tablero"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:stretchColumns="*"
-        android:layout_margin="8dp">
-    </TableLayout>
-
-        <!-- Botón Atacar. -->
-        <Button
-            android:layout_height="70dp"
-            android:layout_margin="30dp"
-            android:layout_gravity="center"
-            android:text="Atacar"
-            android:onClick="atacar"/>
-
+        android:layout_gravity="center"
+        android:text="Reiniciar juego"
+        android:id="@+id/reinicio"
+        android:onClick="reiniciarJuego"/>
 </TableLayout>
