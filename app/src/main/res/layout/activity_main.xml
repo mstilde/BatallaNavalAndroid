@@ -1,43 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:stretchColumns="*">
-    <Toolbar
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:title="Batalla Naval"
-        android:background="#3399FF"
-        />
-    <TableRow>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Aciertos: 0"
-            android:id="@+id/contador_aciertos" />
-        <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:text="Movimientos: 0"
-            android:id="@+id/contador_movimientos"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Barcos restantes: 0"
-            android:id="@+id/barcos_Restantes"/>
-    </TableRow>
-    <TableLayout
+    android:orientation="vertical"
+    android:padding="40sp">
+    <TextView
+        android:id="@+id/titulo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:stretchColumns="*"
-        android:id="@+id/tablero">
-    </TableLayout>
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:text="Batalla Naval"
+        android:textSize="55sp"
+        android:layout_marginTop="100sp"/>
+    <TextView
+        android:id="@+id/saludoJugador"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/titulo"
+        android:layout_alignRight="@+id/titulo"
+        android:layout_below="@+id/titulo"
+        android:text="Bienvenido: Nuevo Jugador"
+        android:layout_marginTop="100sp"
+        android:gravity="center"/>
     <Button
+        android:id="@+id/btnCambiarNombre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/titulo"
+        android:layout_alignRight="@+id/titulo"
+        android:layout_below="@+id/saludoJugador"
+        android:text="Cambiar Nombre del Jugador"
+        android:layout_marginTop="10sp"/>
+    <GridLayout
+        android:id="@+id/seleccionarDificultad"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Reiniciar juego"
-        android:id="@+id/reinicio"
-        android:onClick="reiniciarJuego"/>
-</TableLayout>
+        android:layout_below="@+id/btnCambiarNombre"
+        android:orientation="horizontal"
+        android:layout_alignRight="@+id/titulo"
+        android:layout_alignLeft="@+id/titulo">
+        <Button
+            android:layout_gravity="fill_horizontal"
+            android:text="Cambiar dificultad"/>
+        <TextView
+            android:text="Fácil [6 x 6]"
+            android:textSize="17sp"
+            android:paddingRight="25sp"
+            android:paddingLeft="25sp"/>
+    </GridLayout>
+    <Button
+        android:layout_marginTop="30sp"
+        android:layout_width="wrap_content"
+        android:layout_height="70sp"
+        android:layout_below="@+id/seleccionarDificultad"
+        android:text="Comenzar Juego"
+        android:textSize="25dp"
+        android:layout_alignLeft="@+id/titulo"
+        android:layout_alignRight="@+id/titulo"
+        android:onClick="iniciarNuevoJuego"
+    />
+    <Button
+        android:id="@+id/ayuda"
+        android:layout_marginTop="30sp"
+        android:layout_width="60sp"
+        android:layout_height="wrap_content"
+        android:text="?"
+        android:textSize="30dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:onClick="ayuda"
+        />
+</RelativeLayout>
