@@ -10,6 +10,7 @@ import android.widget.TableRow
 import kotlin.random.Random
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 
 class ActivityJuego : AppCompatActivity() {
     lateinit var tableroJuego : TableLayout // Tablero en donde se va a desarrollar el juego en el xml
@@ -23,6 +24,7 @@ class ActivityJuego : AppCompatActivity() {
     var cantidadAciertos = 0 // Variable interna de aciertos
     var cantidadMovimientos = 0 // Variable interna de cantidad de movimientos
     var barcos = 0 // Variable interna de barcos a hundir
+    val builder = AlertDialog.Builder(this) // Dialogo de alerta/victoria
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -109,7 +111,7 @@ class ActivityJuego : AppCompatActivity() {
         casillero?.isEnabled = false // Deshabilitamos el botón
 
         if (barcos==0) { // Verificamos si quedan barcos
-            Toast.makeText(this,"¡Hundiste todos los barcos!", Toast.LENGTH_LONG).show() // Se muestra el toast al ganar la partida
+            mostrarDialogoVictoria() // Se muestra el dialogo al ganar la partida
         }
     }
     // Se crea la interfáz gráfica del tablero, con sus botones en el TableLayout del xml
@@ -197,5 +199,26 @@ class ActivityJuego : AppCompatActivity() {
         viewAcertados.text = "Acertados: ${cantidadAciertos}"
         viewMovimientos.text = "Movimientos: ${cantidadMovimientos}"
         viewBarcosRestantes.text= "Barcos restantes: ${barcos}"
+    }
+
+    fun mostrarDialogoVictoria() {
+        deshabilitarBotones()
+        
+        builder.setTitle("¡Victoria!")
+        builder.setMessage("¡Hundiste todos los barcos!\nBarcos: ${cantidadAciertos} - Agua: ${cantidadMovimientos-cantidadAciertos}")
+        builder.setNegativeButton("Reiniciar") { dialog,which ->
+            reiniciarJuego(View(this))
+        }
+        builder.setPositiveButton("Salir") { dialog, which ->
+            // Futuro botón para volver al menú principal
+        }
+    }
+
+    fun deshabilitarBotones() {
+        for (i in 0 until tamanio) {
+            for (j in 0 until tamanio) {
+                tableroBotones[i][j]?.isEnabled = false
+            }
+        }
     }
 }
