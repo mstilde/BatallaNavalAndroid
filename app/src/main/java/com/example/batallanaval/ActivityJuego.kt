@@ -24,19 +24,21 @@ class ActivityJuego : AppCompatActivity() {
     var cantidadAciertos = 0 // Variable interna de aciertos
     var cantidadMovimientos = 0 // Variable interna de cantidad de movimientos
     var barcos = 0 // Variable interna de barcos a hundir
-    val builder = AlertDialog.Builder(this) // Dialogo de alerta/victoria
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_juego)
+
         // Asignamos a las variables declaradas sus respectivos elementos xml
         tableroJuego = findViewById(R.id.tablero)
         viewMovimientos = findViewById<TextView>(R.id.contador_movimientos)
         viewBarcosRestantes = findViewById<TextView>(R.id.barcos_Restantes)
         viewAcertados = findViewById<TextView>(R.id.contador_aciertos)
+
         // Inicializamos la cantidad de barcos y el tablero
         colocarBarcos()
         iniciarTablero()
+
         viewBarcosRestantes.text= "Barcos restantes: ${barcos}"
     }
 
@@ -203,7 +205,8 @@ class ActivityJuego : AppCompatActivity() {
 
     fun mostrarDialogoVictoria() {
         deshabilitarBotones()
-        
+        val builder = AlertDialog.Builder(this) // Dialogo de alerta/victoria
+
         builder.setTitle("¡Victoria!")
         builder.setMessage("¡Hundiste todos los barcos!\nBarcos: ${cantidadAciertos} - Agua: ${cantidadMovimientos-cantidadAciertos}")
         builder.setNegativeButton("Reiniciar") { dialog,which ->
@@ -212,6 +215,8 @@ class ActivityJuego : AppCompatActivity() {
         builder.setPositiveButton("Salir") { dialog, which ->
             // Futuro botón para volver al menú principal
         }
+
+        builder.show()
     }
 
     fun deshabilitarBotones() {

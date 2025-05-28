@@ -44,10 +44,12 @@
         android:layout_alignRight="@+id/titulo"
         android:layout_alignLeft="@+id/titulo">
         <Button
+            android:onClick="btnCambiarDificultad"
             android:layout_gravity="fill_horizontal"
             android:text="Cambiar dificultad"/>
         <TextView
-            android:text="Fácil [6 x 6]"
+            android:id="@+id/viewDificultad"
+            android:text="Fácil [6x6]"
             android:textSize="17sp"
             android:paddingRight="25sp"
             android:paddingLeft="25sp"/>
