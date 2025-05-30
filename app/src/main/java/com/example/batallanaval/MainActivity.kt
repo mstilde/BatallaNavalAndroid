@@ -1,5 +1,6 @@
 package com.example.batallanaval
 
+import android.content.Intent
 import android.widget.TableLayout
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -55,5 +56,12 @@ class MainActivity : AppCompatActivity() {
         }
 
         builder.show()
+    }
+
+    fun iniciarNuevoJuego(v: View) {
+        val i = Intent(this, ActivityJuego::class.java)
+        i.putExtra("nombreJugador", nombreJugador)
+        i.putExtra("dificultad", dificultad)
+        startActivity(i)
     }
 }

@@ -17,8 +17,10 @@ class ActivityJuego : AppCompatActivity() {
     lateinit var viewMovimientos: TextView // Variable para almacenar el View de los movimientos del usuario
     lateinit var viewBarcosRestantes: TextView // Variable para almacenar el View de los barcos restantes
     lateinit var viewAcertados: TextView // Variable para almacenar el view de los barcos acertados
+    lateinit var nombreJugador : String
 
-    val tamanio = 6 // Constante de dimensión física para el tablero
+
+    var tamanio = 6 // Constante de dimensión física para el tablero
     var tableroBooleanos = Array(tamanio){Array(tamanio){false}} // Matriz de booleanos para los valores barco/agua (inicializado tdo en false, osea, agua)
     var tableroBotones = Array(tamanio){arrayOfNulls<Button>(tamanio)} // Matriz de memoria para botones, inicializados en null
     var cantidadAciertos = 0 // Variable interna de aciertos
@@ -28,6 +30,11 @@ class ActivityJuego : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_juego)
+
+        val extras = intent.extras
+        tamanio = extras?.getInt("dificultad") ?: tamanio
+        nombreJugador = extras?.getString("nombreJugador") ?: "Nuevo Jugador"
+
 
         // Asignamos a las variables declaradas sus respectivos elementos xml
         tableroJuego = findViewById(R.id.tablero)
