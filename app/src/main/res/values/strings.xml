@@ -1,3 +1,29 @@
 <resources>
-    <string name="app_name">BatallaNaval</string>
+    <string name="app_name">RecursosDeArchivo</string>
+    <string name="titulo">Mini Batalla Naval</string>
+    <string name="reiniciar">Reiniciar</string>
+    <string name="nombrePorDefecto">Nuevo Jugador</string>
+    <string name="cambiarDificultad">Cambiar Dificultad</string>
+    <string name="dificultadFacil">Fácil [6x6]</string>
+    <string name="dificultadNormal">Normal [8x8]</string>
+    <string name="dificultadDificil">Difícil [10x10]</string>
+    <string name="comenzarJuego">Comenzar Juego</string>
+    <string name="aciertos">Aciertos: </string>
+    <string name="movimientos">Movimientos: </string>
+    <string name="barcos">Barcos: </string>
+    <string name="tituloCambiarNombre">Cambio de nombre</string>
+    <string name="mensajeCambiarNombre">Ingrese un nuevo nombre del jugador</string>
+    <string name="aceptar">Aceptar</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="bienvenida">"Bienvenido: "</string>
+    <string name="tituloCambiarDificultad">Cambiar Dificultad</string>
+    <string name="mensajeCambiarDificultad">Selecciona una dificultad de juego</string>
+    <string name="casilleroBarco">BARCO</string>
+    <string name="casilleroAgua">AGUA</string>
+    <string name="tituloVictoria">¡Victoria!</string>
+    <string name="mensajeVictoria">¡Hundiste todos los barcos!</string>
+    <string name="salir">Salir</string>
+    <string name="ayuda">Ayuda</string>
+    <string name="menu">Menu Principal</string>
+    <string name="mensajeAyuda">Lorem imp</string>
 </resources>

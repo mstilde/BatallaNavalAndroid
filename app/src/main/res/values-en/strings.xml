@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ArchiveResources</string>
+    <string name="titulo">Mini Battleship</string>
+    <string name="reiniciar">Restart</string>
+    <string name="nombrePorDefecto">New Player</string>
+    <string name="cambiarDificultad">Change Difficulty</string>
+    <string name="dificultadFacil">Easy [6x6]</string>
+    <string name="dificultadNormal">Normal [8x8]</string>
+    <string name="dificultadDificil">Hard [10x10]</string>
+    <string name="comenzarJuego">Start Game</string>
+    <string name="aciertos">"Hits: "</string>
+    <string name="movimientos">"Moves: "</string>
+    <string name="barcos">"Ships: "</string>
+    <string name="tituloCambiarNombre">Name Change</string>
+    <string name="mensajeCambiarNombre">Enter a new player name</string>
+    <string name="aceptar">Accept</string>
+    <string name="cancelar">Cancel</string>
+    <string name="bienvenida">"Welcome: "</string>
+    <string name="tituloCambiarDificultad">Change Difficulty</string>
+    <string name="mensajeCambiarDificultad">Select a game difficulty</string>
+    <string name="casilleroBarco">SHIP</string>
+    <string name="casilleroAgua">WATER</string>
+    <string name="tituloVictoria">Victory!</string>
+    <string name="mensajeVictoria">You sank all the ships!</string>
+    <string name="salir">Exit</string>
+    <string name="ayuda">Help</string>
+    <string name="menu">Main Menu</string>
+    <string name="mensajeAyuda">Lorem ipsum</string>
+</resources>
