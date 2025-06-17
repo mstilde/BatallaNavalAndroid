@@ -1,43 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:stretchColumns="*">
-    <Toolbar
+    android:orientation="vertical"
+    android:background="#E0E0E0"
+    android:padding="16dp">
+
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="#666600" />
+
+    <TextView
+        android:id="@+id/view_jugador"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:title="Batalla Naval"
-        android:background="#3399FF"
-        />
-    <TableRow>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Aciertos: 0"
-            android:id="@+id/contador_aciertos" />
-        <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:text="Movimientos: 0"
-            android:id="@+id/contador_movimientos"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Barcos restantes: 0"
-            android:id="@+id/barcos_Restantes"/>
-    </TableRow>
+        android:text="@string/jugador"
+        android:textSize="28sp"
+        android:textColor="#212121"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:padding="12dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:backgroundTint="#666600"
+        android:elevation="4dp" />
+
     <TableLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:stretchColumns="*"
-        android:id="@+id/tablero">
+        android:background="#FFFFFF"
+        android:padding="1dp"
+        android:layout_marginBottom="12dp"
+        android:elevation="2dp">
+        <TableRow>
+            <TextView
+                android:id="@+id/contador_aciertos"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/aciertos"
+                android:textSize="13sp"
+                android:textColor="#212121"
+                android:gravity="center"
+                android:padding="8dp" />
+            <TextView
+                android:id="@+id/contador_movimientos"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/movimientos"
+                android:textSize="13sp"
+                android:textColor="#212121"
+                android:gravity="center"
+                android:padding="8dp" />
+            <TextView
+                android:id="@+id/barcos_Restantes"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/barcos_restantes"
+                android:textSize="13sp"
+                android:textColor="#212121"
+                android:gravity="center"
+                android:padding="8dp" />
+        </TableRow>
     </TableLayout>
-    <Button
+
+    <TableLayout
+        android:id="@+id/tablero"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#FFFFFF"
+        android:padding="2dp"
+        android:layout_marginBottom="12dp"
+        android:elevation="2dp" />
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Reiniciar juego"
-        android:id="@+id/reinicio"
-        android:onClick="reiniciarJuego"/>
-</TableLayout>
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="8dp">
+        <Button
+            android:id="@+id/reinicio"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="8dp"
+            android:text="@string/reinicio"
+            android:textSize="16sp"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#666600"
+            android:elevation="2dp" />
+        <Button
+            android:id="@+id/opciones"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:text="@string/opciones_popup"
+            android:textSize="16sp"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#666600"
+            android:elevation="2dp" />
+    </LinearLayout>
+</LinearLayout>

@@ -1,29 +1,35 @@
 <resources>
-    <string name="app_name">RecursosDeArchivo</string>
-    <string name="titulo">Mini Batalla Naval</string>
-    <string name="reiniciar">Reiniciar</string>
-    <string name="nombrePorDefecto">Nuevo Jugador</string>
-    <string name="cambiarDificultad">Cambiar Dificultad</string>
-    <string name="dificultadFacil">Fácil [6x6]</string>
-    <string name="dificultadNormal">Normal [8x8]</string>
-    <string name="dificultadDificil">Difícil [10x10]</string>
-    <string name="comenzarJuego">Comenzar Juego</string>
+    <string name="app_name">BatallaNaval</string>
+    <string name="usuario">Ingrese nombre de jugador</string>
+    <string name="btn_inicio">Iniciar juego</string>
+    <string name="string_dificultad">Cambiar dificultad</string>
+    <string name="nombre_jugador">Jugador Nuevo</string>
+    <string name="ayuda">Guia</string>
+    <string-array name="select">
+        <item>6X6</item>
+        <item>8X8</item>
+        <item>10X10</item>
+    </string-array>
+    <string name="btn_atras">Atras</string>
+    <string name="leyenda_guia">Bienvenido a Mini Batalla Naval\n\n¿Como jugar? Mini Batalla Naval es
+    un juego simple,donde tenes que hundir todos los barcos en la menor cantidad de movimientos
+    ¡Selecciona un cuadrante y dispara! Si das en el blanco se cambiara a rojo y sino...agua(celeste)
+    Podes en cualquier momento reiniciar el juego o volver al menu para cambiar la dificultad para mas emocion
+    Si olvidas algun paso,podes consultar la guia en cualquier momento</string>
+    //strings de la activity de juego
     <string name="aciertos">Aciertos: </string>
-    <string name="movimientos">Movimientos: </string>
-    <string name="barcos">Barcos: </string>
-    <string name="tituloCambiarNombre">Cambio de nombre</string>
-    <string name="mensajeCambiarNombre">Ingrese un nuevo nombre del jugador</string>
-    <string name="aceptar">Aceptar</string>
-    <string name="cancelar">Cancelar</string>
-    <string name="bienvenida">"Bienvenido: "</string>
-    <string name="tituloCambiarDificultad">Cambiar Dificultad</string>
-    <string name="mensajeCambiarDificultad">Selecciona una dificultad de juego</string>
-    <string name="casilleroBarco">BARCO</string>
-    <string name="casilleroAgua">AGUA</string>
-    <string name="tituloVictoria">¡Victoria!</string>
-    <string name="mensajeVictoria">¡Hundiste todos los barcos!</string>
-    <string name="salir">Salir</string>
-    <string name="ayuda">Ayuda</string>
-    <string name="menu">Menu Principal</string>
-    <string name="mensajeAyuda">Lorem imp</string>
+    <string name="barcos_restantes">"Barcos:  "</string>
+    <string name="movimientos">"Jugadas: "</string>
+    <string name="reinicio">Reiniciar</string>
+    <string name="jugador">Jugador: </string>
+    <string name="opciones_popup">Opciones</string>
+    <string name="volver_a_menu">Volver a menu principal</string>
+    <string name="ganaste">¡Has hundido toda la flota!</string>
+    <string name="titulo">Mini Batalla Naval</string>
+    <string name="nombre_anonimo">Anónimo</string>
+    <string name="barco">BARCO</string>
+    <string name="agua">AGUA</string>
+    <string name="fallos">Agua:</string>
+    <string name="btnSalir">Salir</string>
+    <string name="btnReiniciar">Reiniciar</string>
 </resources>

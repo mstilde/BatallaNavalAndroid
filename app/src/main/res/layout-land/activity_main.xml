@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:gravity="center_vertical">
+
+        <!-- Left Section (Title, Player Input, Play Button) -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:paddingEnd="16dp">
+
+            <TextView
+                android:id="@+id/titulo_juego"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/titulo"
+                android:textSize="32sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_marginBottom="24dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/usuario"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:layout_marginBottom="8dp"/>
+
+            <EditText
+                android:id="@+id/nombre_jugador"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:hint="@string/nombre_jugador"
+                android:gravity="center"
+                android:background="@color/black"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:padding="8dp"
+                android:layout_marginBottom="16dp"/>
+
+            <Button
+                android:id="@+id/btn_jugar"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:text="@string/btn_inicio"
+                android:textSize="18sp"
+                android:backgroundTint="#666600"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="24dp"/>
+
+        </LinearLayout>
+
+        <!-- Right Section (Difficulty and Help Button) -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:paddingStart="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/string_dificultad"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="italic"
+                android:layout_marginBottom="8dp"/>
+
+            <Spinner
+                android:id="@+id/dificultad"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="#FFFFFF"
+                android:layout_marginBottom="24dp"/>
+
+            <Button
+                android:id="@+id/btn_Ayuda"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:text="@string/ayuda"
+                android:textSize="18sp"
+                android:backgroundTint="#666600"
+                android:textColor="@android:color/white"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>
