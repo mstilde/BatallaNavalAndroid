@@ -56,10 +56,20 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // Seleccionar tiempo
+    private fun obtenerTiempoLimite(): Int {
+        return when (seleccionarDificultad()) {
+            6 -> 20
+            8 -> 25
+            10 -> 30
+            else -> 20
+        }
+    }
+
     // Devuelve el nombre del jugador (o uno por defecto)
     private fun obtenerNombreJugador(): String {
         val nombre = inputJugador.text.toString().trim()
-        val nombreAnonimo = getString(R.string.nombre_anonimo)
+        val nombreAnonimo = getString(R.string.nombreAnonimo)
         return if (nombre.isEmpty()) nombreAnonimo else nombre
     }
 
@@ -68,6 +78,7 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, ActivityJuego::class.java)
         intent.putExtra("dato1", seleccionarDificultad())
         intent.putExtra("dato2", obtenerNombreJugador())
+        intent.putExtra("datoTiempo", obtenerTiempoLimite())
         startActivity(intent)
     }
 }

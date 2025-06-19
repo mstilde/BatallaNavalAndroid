@@ -19,7 +19,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/leyenda_guia"
+            android:text="@string/leyendaGuia"
             android:textSize="20sp"
             android:textColor="@color/black"
             android:background="#FFFFFF"
@@ -42,7 +42,7 @@
             android:id="@+id/atras"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:text="@string/btn_atras"
+            android:text="@string/btnAtras"
             android:textSize="18sp"
             android:backgroundTint="#666600"
             android:textColor="@android:color/white"

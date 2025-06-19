@@ -7,10 +7,27 @@
     android:background="#E0E0E0"
     android:padding="16dp">
 
-    <androidx.appcompat.widget.Toolbar
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:background="#666600" />
+        android:layout_height="56sp"
+        android:background="#666600"
+        android:orientation="horizontal"
+        android:gravity="center"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tiempoLimite"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+            android:paddingRight="5sp"/>
+        <TextView
+            android:id="@+id/timer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="25sp"/>
+    </LinearLayout>
 
     <TextView
         android:id="@+id/view_jugador"
@@ -58,7 +75,7 @@
                 android:id="@+id/barcos_Restantes"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/barcos_restantes"
+                android:text="@string/barcosRestantes"
                 android:textSize="13sp"
                 android:textColor="#212121"
                 android:gravity="center"
@@ -99,7 +116,7 @@
             android:layout_height="48dp"
             android:layout_weight="1"
             android:layout_marginStart="8dp"
-            android:text="@string/opciones_popup"
+            android:text="@string/opcionesPopup"
             android:textSize="16sp"
             android:textColor="#FFFFFF"
             android:backgroundTint="#666600"

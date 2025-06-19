@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:title="@string/volver_a_menu"
+    <item android:title="@string/volverAMenu"
         android:id="@+id/item1"/>
-    <item android:title="@string/leyenda_guia"
+    <item android:title="@string/ayuda"
         android:id="@+id/item2"/>
 </menu>

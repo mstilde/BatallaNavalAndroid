@@ -3,9 +3,16 @@ package com.example.batallanaval
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Looper
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import android.os.Handler
+import android.view.View
+import org.json.JSONArray
+import org.json.JSONObject
+import java.io.File
+import java.io.IOException
 import kotlin.random.Random
 
 class ActivityJuego : AppCompatActivity() {
@@ -18,16 +25,34 @@ class ActivityJuego : AppCompatActivity() {
     private lateinit var textAciertos: TextView
     private lateinit var botonMenuPopup: Button
     private lateinit var botonReiniciar: Button
+    private lateinit var visorDeTiempo: TextView
 
     // Variables internas del juego
     private var barcos = 0
     private var movimientos = 0
     private var aciertos = 0
     private var dificultad = 6
+    private var tiempoDificultad = 0
+    private var tiempo = 0
+    private var handlerTiempo = Handler(Looper.getMainLooper())
 
     // Tablero lógico y visual
     private lateinit var matrizBarcos: Array<BooleanArray>
     private lateinit var matrizBotones: Array<Array<Button>>
+
+    private val runnableTiempo = object : Runnable {
+        override fun run() {
+            tiempo--
+            visorDeTiempo.text = tiempo.toString()
+            handlerTiempo.postDelayed(this, 1000)
+            if (tiempo <= 0) {
+                detenerTimer()
+                mostrarDialogoDerrota()
+            } else if (tiempo <= 10) {
+                visorDeTiempo.setTextColor(getColor(android.R.color.holo_red_light))
+            }
+        }
+    }
 
     // onCreate
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,11 +67,15 @@ class ActivityJuego : AppCompatActivity() {
         tableroXml = findViewById(R.id.tablero)
         botonReiniciar = findViewById(R.id.reinicio)
         botonMenuPopup = findViewById(R.id.opciones)
+        visorDeTiempo = findViewById(R.id.timer)
 
         // Recuperamos datos del Intent
         val nombreJugador = intent.getStringExtra("dato2") ?: "Jugador" // En caso de no recibir un nombre, por defecto asignamos "Jugador"
         dificultad = intent.getIntExtra("dato1", 6) // Si, por si acaso, no recibe nada, siempre la pantalla empieza en 6 casilleros
         textJugador.text = getString(R.string.jugador) + nombreJugador // Mostramos el nombre del jugador en pantalla
+        tiempoDificultad = intent.getIntExtra("datoTiempo", 0)
+        tiempo = tiempoDificultad
+        visorDeTiempo.text = tiempo.toString()
 
         // Si la abrimos otra activity, restauramos el estado
         if (savedInstanceState != null) {
@@ -102,6 +131,9 @@ class ActivityJuego : AppCompatActivity() {
         // Asignamos acciones para los botones
         botonReiniciar.setOnClickListener { reiniciarJuego() }
         botonMenuPopup.setOnClickListener { mostrarMenuPopup() }
+
+        // Iniciar contador
+        handlerTiempo.postDelayed(runnableTiempo, 1000)
     }
 
     // Calcula el tamaño dinámico de los botones
@@ -154,7 +186,7 @@ class ActivityJuego : AppCompatActivity() {
     private fun actualizarContadores() {
         textAciertos.text = getString(R.string.aciertos) + aciertos
         textMovimientos.text = getString(R.string.movimientos) + movimientos
-        textBarcosRestantes.text = getString(R.string.barcos_restantes) + (barcos - aciertos)
+        textBarcosRestantes.text = getString(R.string.barcosRestantes) + (barcos - aciertos)
     }
 
     // Guarda el estado actual
@@ -263,7 +295,11 @@ class ActivityJuego : AppCompatActivity() {
 
         // Verificamos luego de clickear el botón si ya se eliminaron todos los barcos
         if (aciertos == barcos) {
-            mostrarDialogoVictoria()
+            val recordBatido = nuevoRecord()
+            if (recordBatido) {
+                almacenarJugador()
+            }
+            mostrarDialogoVictoria(recordBatido)
         }
     }
 
@@ -273,6 +309,7 @@ class ActivityJuego : AppCompatActivity() {
         movimientos = 0
         aciertos = 0
         barcos = 0
+        iniciarTimer()
         // Volvemos a inicializar las matrices con botones vacios y sin barcos colocados (en false)
         matrizBotones = Array(dificultad) { Array(dificultad) { Button(this) } }
         matrizBarcos = Array(dificultad) { BooleanArray(dificultad) }
@@ -283,14 +320,35 @@ class ActivityJuego : AppCompatActivity() {
     }
 
     // Muestra el cuadro de diálogo al ganar
-    private fun mostrarDialogoVictoria() {
+    private fun mostrarDialogoVictoria(record: Boolean) {
         deshabilitarBotones() // Llamamos a la funcion para deshabilitarlos
+        detenerTimer() // Detenemos el tiempo cuando se gana la partida
 
         // En builder asignamos una instanciación de AlertDialog con el constructor Builder en este contexto (this)
         val builder = AlertDialog.Builder(this)
         // Seteamos el texto del titulo y del mensaje
-        builder.setTitle(getString(R.string.ganaste))
-        builder.setMessage("${getString(R.string.ganaste)}\n${getString(R.string.aciertos)} $aciertos - ${getString(R.string.fallos)} ${movimientos - aciertos}")
+        builder.setTitle(getString(R.string.tituloGanaste))
+        if (record) {
+            builder.setMessage("${getString(R.string.ganaste)}\n${getString(R.string.aciertos)} $aciertos - ${getString(R.string.fallos)} ${movimientos - aciertos}\n\n${getString(R.string.mensajeNuevoRecord)}")
+        } else {
+            builder.setMessage("${getString(R.string.ganaste)}\n${getString(R.string.aciertos)} $aciertos - ${getString(R.string.fallos)} ${movimientos - aciertos}")
+        }
+        // Seteamos los botones y su funcion
+        builder.setPositiveButton(getString(R.string.btnRanking)) { _, _ -> irAlRanking() }
+        builder.setNegativeButton(getString(R.string.btnReiniciar)) { _, _ -> reiniciarJuego() }
+        builder.show()
+    }
+
+    // Muestra el cuadro de diálogo al perder
+    private fun mostrarDialogoDerrota() {
+        deshabilitarBotones() // Llamamos a la funcion para deshabilitarlos
+        detenerTimer() // Detenemos el tiempo cuando se pierde la partida
+
+        // En builder asignamos una instanciación de AlertDialog con el constructor Builder en este contexto (this)
+        val builder = AlertDialog.Builder(this)
+        // Seteamos el texto del titulo y del mensaje
+        builder.setTitle(getString(R.string.tituloPerdiste))
+        builder.setMessage(getString(R.string.perdiste))
         // Seteamos los botones y su funcion
         builder.setPositiveButton(getString(R.string.btnSalir)) { _, _ -> finish() }
         builder.setNegativeButton(getString(R.string.btnReiniciar)) { _, _ -> reiniciarJuego() }
@@ -304,5 +362,43 @@ class ActivityJuego : AppCompatActivity() {
                 matrizBotones[i][j].isEnabled = false // Recorremos la matriz, elemento por elemento, y desactivamos los botones
             }
         }
+    }
+
+    // Detener timer
+    private fun detenerTimer() {
+        handlerTiempo.removeCallbacks(runnableTiempo)
+    }
+
+    // Iniciar timer
+    private fun iniciarTimer() {
+        tiempo = tiempoDificultad + 1
+        visorDeTiempo.setTextColor(getColor(R.color.white))
+        handlerTiempo.removeCallbacks(runnableTiempo) // Por seguridad, limpiamos antes
+        handlerTiempo.postDelayed(runnableTiempo, 1000)
+    }
+
+    // Almacenar jugador
+    private fun almacenarJugador() {
+        val archivo = File(filesDir, "rankingJugadores.txt") // Buscamos el archivo
+        val jugador = JSONObject().apply { // Creamos un objeto JSON con el nombre del jugador
+            put("nombre", textJugador.text.toString())
+        }
+        val jugadoresArray : JSONArray // Creamos una variable tipo array JSON sin inicializar
+
+        if (!archivo.exists()) { // Si el archivo aún no fué creado, jugadoresArray es un array nuevo
+            jugadoresArray = JSONArray()
+        } else { // Si no, almacenamos en jugadoresArray el array que tenemos ya en archivo
+            jugadoresArray = JSONArray(archivo.readText())
+        }
+
+        if (jugadoresArray.length() < 5) { // Si el array es menor a 5, agregamos al jugador
+            jugadoresArray.put(jugador)
+        }
+        archivo.writeText(jugadoresArray.toString()) // Sobrescribimos el archivo con el nuevo array
+    }
+
+    // Evaluamos si re marcó un nuevo record según la dificultad
+    private fun nuevoRecord(): Boolean {
+        return true
     }
 }
