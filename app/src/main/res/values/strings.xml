@@ -36,4 +36,20 @@
     <string name="tituloGanaste">¡Ganaste!</string>
     <string name="tituloPerdiste">Perdiste :(</string>
     <string name="perdiste">No lograste hundir la flota a tiempo</string>
+    <string name="mensajeNuevoRecord">¡Marcaste un nuevo record!</string>
+    <string name="sinNombre">Ingresa un nombre de usuario para continuar</string>
+    <string name="compartirResultado">Compartir</string>
+    <string name="modoFacil">fácil</string>
+    <string name="modoNormal">normal</string>
+    <string name="modoDificil">difícil</string>
+    <string name="puntuacionLograda1">" logró una nueva puntuación."</string>
+    <string name="puntuacionLograda2">¡Terminó el juego en modo</string>
+    <string name="puntuacionLograda3">" logrando "</string>
+    <string name="puntuacionLograda4">" puntos!"</string>
+    <string name="puntos">Puntos:</string>
+    <string name="nombre">Jugador:</string>
+    <string name="vacio">Vacío</string>
+    <string name="textoRanking">Ranking de jugadores</string>
+    <string name="dificultad">Dificultad:</string>
+    <string name="btnAceptar">Aceptar</string>
 </resources>

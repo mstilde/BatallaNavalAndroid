@@ -35,6 +35,8 @@ class ActivityJuego : AppCompatActivity() {
     private var tiempoDificultad = 0
     private var tiempo = 0
     private var handlerTiempo = Handler(Looper.getMainLooper())
+    private var puntajeFinal = 0
+    private var nombreJugador = ""
 
     // Tablero lógico y visual
     private lateinit var matrizBarcos: Array<BooleanArray>
@@ -70,7 +72,7 @@ class ActivityJuego : AppCompatActivity() {
         visorDeTiempo = findViewById(R.id.timer)
 
         // Recuperamos datos del Intent
-        val nombreJugador = intent.getStringExtra("dato2") ?: "Jugador" // En caso de no recibir un nombre, por defecto asignamos "Jugador"
+        nombreJugador = intent.getStringExtra("dato2") ?: "Jugador" // En caso de no recibir un nombre, por defecto asignamos "Jugador"
         dificultad = intent.getIntExtra("dato1", 6) // Si, por si acaso, no recibe nada, siempre la pantalla empieza en 6 casilleros
         textJugador.text = getString(R.string.jugador) + nombreJugador // Mostramos el nombre del jugador en pantalla
         tiempoDificultad = intent.getIntExtra("datoTiempo", 0)
@@ -131,9 +133,6 @@ class ActivityJuego : AppCompatActivity() {
         // Asignamos acciones para los botones
         botonReiniciar.setOnClickListener { reiniciarJuego() }
         botonMenuPopup.setOnClickListener { mostrarMenuPopup() }
-
-        // Iniciar contador
-        handlerTiempo.postDelayed(runnableTiempo, 1000)
     }
 
     // Calcula el tamaño dinámico de los botones
@@ -295,6 +294,7 @@ class ActivityJuego : AppCompatActivity() {
 
         // Verificamos luego de clickear el botón si ya se eliminaron todos los barcos
         if (aciertos == barcos) {
+            puntajeFinal = ((aciertos.toDouble() / movimientos.toDouble()) * 1000).toInt()
             val recordBatido = nuevoRecord()
             if (recordBatido) {
                 almacenarJugador()
@@ -319,6 +319,11 @@ class ActivityJuego : AppCompatActivity() {
         actualizarContadores()
     }
 
+    private fun llevarARanking() {
+        val i = Intent(this, ActivityRanking::class.java)
+        startActivity(i)
+    }
+
     // Muestra el cuadro de diálogo al ganar
     private fun mostrarDialogoVictoria(record: Boolean) {
         deshabilitarBotones() // Llamamos a la funcion para deshabilitarlos
@@ -330,11 +335,13 @@ class ActivityJuego : AppCompatActivity() {
         builder.setTitle(getString(R.string.tituloGanaste))
         if (record) {
             builder.setMessage("${getString(R.string.ganaste)}\n${getString(R.string.aciertos)} $aciertos - ${getString(R.string.fallos)} ${movimientos - aciertos}\n\n${getString(R.string.mensajeNuevoRecord)}")
+            builder.setNeutralButton(getString(R.string.compartirResultado)) { _, _ -> compartirRecord() }
         } else {
             builder.setMessage("${getString(R.string.ganaste)}\n${getString(R.string.aciertos)} $aciertos - ${getString(R.string.fallos)} ${movimientos - aciertos}")
         }
+
         // Seteamos los botones y su funcion
-        builder.setPositiveButton(getString(R.string.btnRanking)) { _, _ -> irAlRanking() }
+        builder.setPositiveButton(getString(R.string.btnAceptar)) { _, _ -> llevarARanking() }
         builder.setNegativeButton(getString(R.string.btnReiniciar)) { _, _ -> reiniciarJuego() }
         builder.show()
     }
@@ -352,7 +359,12 @@ class ActivityJuego : AppCompatActivity() {
         // Seteamos los botones y su funcion
         builder.setPositiveButton(getString(R.string.btnSalir)) { _, _ -> finish() }
         builder.setNegativeButton(getString(R.string.btnReiniciar)) { _, _ -> reiniciarJuego() }
-        builder.show()
+        builder.setCancelable(false)
+
+        // Crear una clase tipo Alert para agregarle la funcionalidad de que no se pueda quitar al tapear afuera
+        val dialog = builder.create()
+        dialog.setCanceledOnTouchOutside(false)
+        dialog.show()
     }
 
     // Desactiva todos los botones (fin del juego)
@@ -377,28 +389,103 @@ class ActivityJuego : AppCompatActivity() {
         handlerTiempo.postDelayed(runnableTiempo, 1000)
     }
 
+    private fun retornarArchivoDificultad(): File {
+        if (tiempoDificultad == 20) {
+            return File(filesDir, "rankingModoFacil.txt")
+        } else if (tiempoDificultad == 25) {
+            return File(filesDir, "rankingModoNormal.txt")
+        } else {
+            return File(filesDir, "rankingModoDificil.txt")
+        }
+    }
+
     // Almacenar jugador
     private fun almacenarJugador() {
-        val archivo = File(filesDir, "rankingJugadores.txt") // Buscamos el archivo
+        val archivo = retornarArchivoDificultad() // Buscamos el archivo
+
         val jugador = JSONObject().apply { // Creamos un objeto JSON con el nombre del jugador
-            put("nombre", textJugador.text.toString())
-        }
-        val jugadoresArray : JSONArray // Creamos una variable tipo array JSON sin inicializar
-
-        if (!archivo.exists()) { // Si el archivo aún no fué creado, jugadoresArray es un array nuevo
-            jugadoresArray = JSONArray()
-        } else { // Si no, almacenamos en jugadoresArray el array que tenemos ya en archivo
-            jugadoresArray = JSONArray(archivo.readText())
+            put("nombre", nombreJugador)
+            put("puntos", puntajeFinal)
         }
 
-        if (jugadoresArray.length() < 5) { // Si el array es menor a 5, agregamos al jugador
+        val jugadoresArray = try {
+            if (!archivo.exists() || archivo.readText().isBlank()) {
+                JSONArray()
+            } else {
+                JSONArray(archivo.readText())
+            }
+        } catch (e: Exception) {
+            JSONArray() // Si hay un error de parsing, empezamos con array vacío
+        }
+
+        if (jugadoresArray.length() == 0) {
             jugadoresArray.put(jugador)
+        } else {
+            var posicionEncontrada = false
+            var jugadorEvaluado: JSONObject
+            var index = 0
+
+            while (!posicionEncontrada && index < jugadoresArray.length()) {
+                jugadorEvaluado = jugadoresArray.getJSONObject(index)
+                if (jugadorEvaluado.getInt("puntos") > jugador.getInt("puntos")) {
+                    index++
+                } else {
+                    posicionEncontrada = true
+                }
+            }
+
+            if (jugadoresArray.length() == 5) {
+                jugadoresArray.remove(jugadoresArray.length() - 1)
+            }
+
+            for (i in jugadoresArray.length() downTo index + 1) {
+                jugadoresArray.put(i, jugadoresArray.getJSONObject(i - 1))
+            }
+
+            jugadoresArray.put(index, jugador)
         }
-        archivo.writeText(jugadoresArray.toString()) // Sobrescribimos el archivo con el nuevo array
+
+        archivo.writeText(jugadoresArray.toString()) // Sobrescribimos el archivo
     }
 
     // Evaluamos si re marcó un nuevo record según la dificultad
     private fun nuevoRecord(): Boolean {
-        return true
+        val archivo = retornarArchivoDificultad()
+
+        val jugadoresArray = try {
+            if (!archivo.exists() || archivo.readText().isBlank()) {
+                JSONArray()
+            } else {
+                JSONArray(archivo.readText())
+            }
+        } catch (e: Exception) {
+            JSONArray()
+        }
+
+        return if (jugadoresArray.length() < 5) {
+            true // Aún hay espacio en el ranking
+        } else {
+            val ultimoJugador = jugadoresArray.getJSONObject(jugadoresArray.length() - 1)
+            puntajeFinal > ultimoJugador.getInt("puntos")
+        }
+    }
+
+    private fun compartirRecord() {
+        val i = Intent()
+        val dificultadJuego =
+            when (tiempoDificultad) {
+                20 -> getString(R.string.modoFacil)
+                25 -> getString(R.string.modoNormal)
+                else -> getString(R.string.modoDificil)
+            }
+        val mensajeJugador = "${textJugador.text.toString()}${getString(R.string.puntuacionLograda1)}\n" +
+                "${getString(R.string.puntuacionLograda2)}$dificultadJuego${getString(R.string.puntuacionLograda3)}" +
+                "$puntajeFinal${getString(R.string.puntuacionLograda4)}"
+        i.action = Intent.ACTION_SEND
+        i.type = "text/plain"
+        i.putExtra(Intent.EXTRA_TEXT, mensajeJugador)
+        if (i.resolveActivity(packageManager) != null) {
+            startActivity(i)
+        }
     }
 }

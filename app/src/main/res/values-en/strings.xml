@@ -27,4 +27,20 @@
     <string name="tituloGanaste">You win!</string>
     <string name="tituloPerdiste">You lose :(</string>
     <string name="perdiste">You didn\'t sunk the fleet on time</string>
+    <string name="mensajeNuevoRecord">You scored a new record!</string>
+    <string name="sinNombre">Enter a username to continue</string>
+    <string name="compartirResultado">Share</string>
+    <string name="modoFacil">easy</string>
+    <string name="modoNormal">normal</string>
+    <string name="modoDificil">hard</string>
+    <string name="puntuacionLograda1">" got a new highscore"</string>
+    <string name="puntuacionLograda2">"Finished the game on "</string>
+    <string name="puntuacionLograda3">" mode with "</string>
+    <string name="puntuacionLograda4">" points!"</string>
+    <string name="puntos">"Points: "</string>
+    <string name="nombre">"Player: "</string>
+    <string name="vacio">Empty</string>
+    <string name="textoRanking">Player\'s Ranking</string>
+    <string name="dificultad">"Dificulty: "</string>
+    <string name="btnAceptar">Accept</string>
 </resources>

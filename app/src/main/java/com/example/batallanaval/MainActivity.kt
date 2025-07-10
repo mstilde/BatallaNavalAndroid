@@ -12,6 +12,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var spinnerDificultad: Spinner
     private lateinit var botonIniciar: Button
     private lateinit var botonAyuda: Button
+    private lateinit var botonRanking: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,6 +23,7 @@ class MainActivity : AppCompatActivity() {
         spinnerDificultad = findViewById(R.id.dificultad)
         botonIniciar = findViewById(R.id.btn_jugar)
         botonAyuda = findViewById(R.id.btn_Ayuda)
+        botonRanking=findViewById(R.id.btn_ranking)
 
         // Cargamos el array de dificultades desde strings.xml
         val opciones = resources.getStringArray(R.array.select)
@@ -31,12 +33,20 @@ class MainActivity : AppCompatActivity() {
 
         // Acción al hacer clic en "Iniciar Juego"
         botonIniciar.setOnClickListener {
-            iniciarJuego()
+            val nombre = inputJugador.text.toString().trim()
+            if (nombre.isEmpty()) {
+                Toast.makeText(this, getString(R.string.sinNombre), Toast.LENGTH_SHORT).show()
+            } else {
+                iniciarJuego()
+            }
         }
 
         // Acción al hacer clic en "Ayuda"
         botonAyuda.setOnClickListener {
             mostrarAyuda()
+        }
+        botonRanking.setOnClickListener {
+            botonRanking()
         }
     }
 
@@ -69,8 +79,7 @@ class MainActivity : AppCompatActivity() {
     // Devuelve el nombre del jugador (o uno por defecto)
     private fun obtenerNombreJugador(): String {
         val nombre = inputJugador.text.toString().trim()
-        val nombreAnonimo = getString(R.string.nombreAnonimo)
-        return if (nombre.isEmpty()) nombreAnonimo else nombre
+        return nombre
     }
 
     // Lanza la pantalla de juego con los datos elegidos
@@ -81,4 +90,10 @@ class MainActivity : AppCompatActivity() {
         intent.putExtra("datoTiempo", obtenerTiempoLimite())
         startActivity(intent)
     }
+
+    private fun botonRanking(){
+        val i = Intent(this, ActivityRanking::class.java)
+        startActivity(i)
+    }
 }
+
