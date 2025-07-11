@@ -50,7 +50,6 @@ class ActivityRanking : AppCompatActivity() {
             finish()
         }
 
-        textoDificultad.setText(getString(R.string.dificultad) + "6x6")
         mostrarRanking(6)
     }
 
@@ -62,7 +61,8 @@ class ActivityRanking : AppCompatActivity() {
             10 -> "rankingModoDificil.txt"
             else -> return}
 
-        rankingLista.forEach { it.text = "" }//Limpia los textos para evitar errores de carga
+        rankingLista.forEach { it.text = "" } //Limpia los textos para evitar errores de carga
+
         try {
             val archivo = File(filesDir, nombreArchivo)
             val texto = if (archivo.exists()) archivo.readText() else ""

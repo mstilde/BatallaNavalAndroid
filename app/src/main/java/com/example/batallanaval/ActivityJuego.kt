@@ -46,13 +46,13 @@ class ActivityJuego : AppCompatActivity() {
         override fun run() {
             tiempo--
             visorDeTiempo.text = tiempo.toString()
-            handlerTiempo.postDelayed(this, 1000)
             if (tiempo <= 0) {
                 detenerTimer()
                 mostrarDialogoDerrota()
             } else if (tiempo <= 10) {
                 visorDeTiempo.setTextColor(getColor(android.R.color.holo_red_light))
             }
+            handlerTiempo.postDelayed(this, 1000)
         }
     }
 
@@ -343,7 +343,13 @@ class ActivityJuego : AppCompatActivity() {
         // Seteamos los botones y su funcion
         builder.setPositiveButton(getString(R.string.btnAceptar)) { _, _ -> llevarARanking() }
         builder.setNegativeButton(getString(R.string.btnReiniciar)) { _, _ -> reiniciarJuego() }
-        builder.show()
+
+        builder.setCancelable(false)
+
+        // Construimos el alert dialog final
+        val dialog = builder.create()
+        dialog.setCanceledOnTouchOutside(false)
+        dialog.show()
     }
 
     // Muestra el cuadro de diálogo al perder
@@ -359,9 +365,10 @@ class ActivityJuego : AppCompatActivity() {
         // Seteamos los botones y su funcion
         builder.setPositiveButton(getString(R.string.btnSalir)) { _, _ -> finish() }
         builder.setNegativeButton(getString(R.string.btnReiniciar)) { _, _ -> reiniciarJuego() }
+
         builder.setCancelable(false)
 
-        // Crear una clase tipo Alert para agregarle la funcionalidad de que no se pueda quitar al tapear afuera
+        // Construimos el alert dialog final
         val dialog = builder.create()
         dialog.setCanceledOnTouchOutside(false)
         dialog.show()
@@ -389,6 +396,7 @@ class ActivityJuego : AppCompatActivity() {
         handlerTiempo.postDelayed(runnableTiempo, 1000)
     }
 
+    // Busca según la dificultad que archivo retornar
     private fun retornarArchivoDificultad(): File {
         if (tiempoDificultad == 20) {
             return File(filesDir, "rankingModoFacil.txt")
@@ -418,6 +426,7 @@ class ActivityJuego : AppCompatActivity() {
             JSONArray() // Si hay un error de parsing, empezamos con array vacío
         }
 
+        // Si no hay jugadores en el array, ponemos al jugador en el array. Sino buscamos el indice en donde ubicarlo
         if (jugadoresArray.length() == 0) {
             jugadoresArray.put(jugador)
         } else {
@@ -434,6 +443,7 @@ class ActivityJuego : AppCompatActivity() {
                 }
             }
 
+            // Eliminamos al ultimo jugador una vez que encontramos donde ubicar al nuevo para hacerle espacio
             if (jugadoresArray.length() == 5) {
                 jugadoresArray.remove(jugadoresArray.length() - 1)
             }
@@ -450,8 +460,11 @@ class ActivityJuego : AppCompatActivity() {
 
     // Evaluamos si re marcó un nuevo record según la dificultad
     private fun nuevoRecord(): Boolean {
+        // Buscamos con la función el archivo según la dificultad
         val archivo = retornarArchivoDificultad()
 
+        // Si el archivo de texto esta vacio o no existe, jugadoresArray es un array nuevo
+        // Sino, la variable se transforma en el array ya existente en el archivo
         val jugadoresArray = try {
             if (!archivo.exists() || archivo.readText().isBlank()) {
                 JSONArray()
@@ -462,6 +475,7 @@ class ActivityJuego : AppCompatActivity() {
             JSONArray()
         }
 
+        // Lo que retorna es true si hay espacio en el ranking o si el puntaje final del jugador es mayor al del ultimo jugador del array
         return if (jugadoresArray.length() < 5) {
             true // Aún hay espacio en el ranking
         } else {
@@ -470,20 +484,30 @@ class ActivityJuego : AppCompatActivity() {
         }
     }
 
+    // Funcion para compartir record
     private fun compartirRecord() {
+        // Creamos la variable Intent
         val i = Intent()
+
+        // Según la dificultad establecida, tomamos el texto pertinente para el mensaje
         val dificultadJuego =
             when (tiempoDificultad) {
                 20 -> getString(R.string.modoFacil)
                 25 -> getString(R.string.modoNormal)
                 else -> getString(R.string.modoDificil)
             }
+
+        // Mensaje compartido
         val mensajeJugador = "${textJugador.text.toString()}${getString(R.string.puntuacionLograda1)}\n" +
                 "${getString(R.string.puntuacionLograda2)}$dificultadJuego${getString(R.string.puntuacionLograda3)}" +
                 "$puntajeFinal${getString(R.string.puntuacionLograda4)}"
+
+        // Configuramos en la variable Intent la accion, el tipo y el mensaje
         i.action = Intent.ACTION_SEND
         i.type = "text/plain"
         i.putExtra(Intent.EXTRA_TEXT, mensajeJugador)
+
+        // Verificamos que el celular disponga de apps que puedan recibir el intent
         if (i.resolveActivity(packageManager) != null) {
             startActivity(i)
         }
